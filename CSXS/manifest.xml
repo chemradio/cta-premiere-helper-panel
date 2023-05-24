@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ExtensionManifest ExtensionBundleId="com.my.test" ExtensionBundleVersion="1.0.0" Version="7.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ExtensionList>
+    <Extension Id="org.premiere.panel" Version="1.0.0" />
+  </ExtensionList>
+  <ExecutionEnvironment>
+    <HostList>
+        <Host Name="AEFT" Version="18.4"/>
+        <Host Name="PPRO" Version="9"/>
+    </HostList>
+    <LocaleList>
+      <Locale Code="All" />
+    </LocaleList>
+    <RequiredRuntimeList>
+        <RequiredRuntime Name="CSXS" Version="9.0"/> <!-- MAJOR-VERSION-UPDATE-MARKER -->
+    </RequiredRuntimeList>
+  </ExecutionEnvironment>
+  <DispatchInfoList>
+    <Extension Id="org.premiere.panel">
+      <DispatchInfo>
+        <Resources>
+          <MainPath>./client/index.html</MainPath>
+          <ScriptPath>./host/index.jsx</ScriptPath>
+          <CEFCommandLine />
+        </Resources>
+        <Lifecycle>
+          <AutoVisible>true</AutoVisible>
+        </Lifecycle>
+        <UI>
+          <Type>Panel</Type>
+          <!-- 6) -->
+          <Menu>CTA Premiere Helper</Menu>
+          <Geometry>
+            <Size>
+              <Height>401</Height>
+              <Width>601</Width>
+            </Size>
+            <MaxSize>
+                <Height>800</Height>
+                <Width>1200</Width>
+            </MaxSize>
+            <MinSize>
+                <Height>400</Height>
+                <Width>600</Width>
+            </MinSize>
+          </Geometry>
+          <Icons />
+        </UI>
+      </DispatchInfo>
+    </Extension>
+  </DispatchInfoList>
+</ExtensionManifest>
+
