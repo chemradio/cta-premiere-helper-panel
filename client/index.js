@@ -3,5 +3,5 @@ var timButton = document.querySelector('.tim');
 timButton.addEventListener('click', sayHi);
 
 function sayHi() {
-	csInterface.evalScript('tim()');
+	csInterface.evalScript('tim2()');
 }
