@@ -19,3 +19,13 @@ var slideshowButton = document.getElementById('slideshow');
 slideshowButton.addEventListener('click', () => {
 	csInterface.evalScript('slideshow()');
 });
+
+var voiceConcealButton = document.getElementById('voiceConceal');
+voiceConcealButton.addEventListener('click', () => {
+	csInterface.evalScript('voiceConceal()');
+});
+
+var brollBoxGuestButton = document.getElementById('brollBoxGuest');
+brollBoxGuestButton.addEventListener('click', () => {
+	csInterface.evalScript('brollBoxGuest()');
+});

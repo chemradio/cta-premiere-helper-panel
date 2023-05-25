@@ -1,14 +1,3 @@
-function getClipDimensions(clip) {
-    var projectItem = clip.projectItem;
-    var meta = String(projectItem.getProjectMetadata())
-    var inPoint = "<premierePrivateProjectMetaData:Column.Intrinsic.VideoInfo>";
-    var outPoint = "</premierePrivateProjectMetaData:Column.Intrinsic.VideoInfo>";
-    var dimensionsString = meta.substring(meta.lastIndexOf(inPoint) + inPoint.length, meta.lastIndexOf(outPoint))
-    var videoWidth = Number(dimensionsString.substring(0, dimensionsString.lastIndexOf(" x")));
-    var videoheight = Number(dimensionsString.substring(dimensionsString.lastIndexOf(" x ") + 3, dimensionsString.lastIndexOf(" (")));
-    return [videoWidth, videoheight]
-}
-
 function lockAudioTracks(lock) {
     var audioTracks = app.project.activeSequence.audioTracks;
     var converter = (lock) ? 1 : 0
@@ -24,6 +13,18 @@ function lockVideoTracks(lock) {
         videoTracks[i].setLocked(converter)
     }
 }
+
+function getClipDimensions(clip) {
+    var projectItem = clip.projectItem;
+    var meta = String(projectItem.getProjectMetadata())
+    var inPoint = "<premierePrivateProjectMetaData:Column.Intrinsic.VideoInfo>";
+    var outPoint = "</premierePrivateProjectMetaData:Column.Intrinsic.VideoInfo>";
+    var dimensionsString = meta.substring(meta.lastIndexOf(inPoint) + inPoint.length, meta.lastIndexOf(outPoint))
+    var videoWidth = Number(dimensionsString.substring(0, dimensionsString.lastIndexOf(" x")));
+    var videoheight = Number(dimensionsString.substring(dimensionsString.lastIndexOf(" x ") + 3, dimensionsString.lastIndexOf(" (")));
+    return [videoWidth, videoheight]
+}
+
 
 
 function clipFillSequence(clip) {
@@ -42,6 +43,7 @@ function clipFillSequence(clip) {
         var scaleProperty = clip.components[1].properties[1];
         scaleProperty.setValue(clipTargetScale);
     }
+    return clipTargetScale
 }
 
 function clipFitSequence(clip) {
@@ -60,6 +62,7 @@ function clipFitSequence(clip) {
         var scaleProperty = clip.components[1].properties[1];
         scaleProperty.setValue(clipTargetScale);
     }
+    return clipTargetScale
 }
 
 function nestSelection() {
