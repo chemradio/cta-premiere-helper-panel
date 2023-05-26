@@ -1,14 +1,33 @@
-function voiceConceal() {
-    function applyPitchShifter() {
-        var firstClipFirstTrack = app.project.activeSequence.audioTracks[0].clips[0];
-        var firstClipFirstTrackQE = qe.project.getActiveSequence().getAudioTrackAt(0).getItemAt(0)
-        firstClipFirstTrackQE.addVideoEffect(qe.project.getVideoEffectByName("Pitch Shifter"));
+voiceConceal()
 
-        // var blurEffect = firstClipFirstTrack.components[firstClipFirstTrack.components.numItems - 1];
-        // blurEffect.properties[0].setValue(blurStrength)
+function voiceConceal() {
+    var firstClipFirstTrackQE = qe.project.getActiveSequence()
+    return
+        var firstClipFirstTrack = app.project.activeSequence.audioTracks[0].clips[0];
+        var firstClipFirstTrackQE = qe.project.getActiveSequence().getAudioTrackAt(0).getItemAt(0);
+    // applyPitchShifter()
+    firstClipFirstTrackQE.addAudioEffect(qe.project.getAudioEffectByName("Pitch Shifter"));
+    var firstClipFirstTrackComponents = app.project.activeSequence.audioTracks[0].clips[0].components;
+
+    for (var i = 0; i< firstClipFirstTrackComponents.length; i++){
+        if (firstClipFirstTrackComponents[i].displayName == "Pitch Shifter") {
+            var pitchShifterEffect = firstClipFirstTrackComponents[i];
+            for (var j = 0; j< pitchShifterEffect.properties.length; j++){
+                if (pitchShifterEffect.properties[j].displayName == "Precision" ){
+                    pitchShifterEffect.properties[j].setValue(2);
+                }
+                if (pitchShifterEffect.properties[j].displayName == "Transpose Ratio" ){
+                    pitchShifterEffect.properties[j].setValue(.1380711);
+                    // var x  =pitchShifterEffect.properties[j].getValue();
+                    // alert(String(x))
+                }
+                
+                // alert(String(pitchShifterEffect.properties[j].displayName));
+                // "Transpose Ratio" "Frequency" "Overlapping" "Use Default Setting" "Use Positive Cents"
+            }
+        }
     }
-    talert("hi")
-    applyPitchShifter()
+
     return
 
 
