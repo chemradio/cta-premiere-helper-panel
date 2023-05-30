@@ -102,3 +102,72 @@ function nestSelection() {
     // Return newly created sequence
     return newSequence;
 }
+
+function getQEItemsBySelection() {
+	var activeSequence = app.project.activeSequence;
+	var selectedClips = activeSequence.getSelection();
+	if (selectedClips.length < 1) {
+		return;
+	}
+
+	var tempClips = [];
+	for (var i = 0; i < selectedClips.length; i++) {
+		var searchClip = selectedClips[i];
+
+		// figure out clip index
+		var lookupTrack;
+		if (searchClip.mediaType == 'Video') {
+			lookupTrack =
+				app.project.activeSequence.videoTracks[
+					searchClip.parentTrackIndex
+				];
+		} else {
+			lookupTrack =
+				app.project.activeSequence.audioTracks[
+					searchClip.parentTrackIndex
+				];
+		}
+
+		for (var j = 0; j < lookupTrack.clips.numItems; j++) {
+			var tempClip = lookupTrack.clips[j];
+			if (
+				tempClip.name == searchClip.name &&
+				tempClip.start.seconds == searchClip.start.seconds
+			) {
+				tempClips.push({ clipId: j, clip: searchClip });
+			}
+		}
+	}
+
+	if (tempClips.length < 1) {
+		return;
+	}
+
+	var qeClips = [];
+	for (var j = 0; j < tempClips.length; j++) {
+		var clip = tempClips[j].clip;
+		var clipId = tempClips[j].clipId;
+
+		var qeSeq = qe.project.getActiveSequence();
+		var targetTrack;
+
+		if (clip.mediaType == 'Video') {
+			targetTrack = qeSeq.getVideoTrackAt(clip.parentTrackIndex);
+		} else {
+			targetTrack = qeSeq.getAudioTrackAt(clip.parentTrackIndex);
+		}
+		var qeClip = targetTrack.getItemAt(clipId);
+		qeClips.push({ qeClip: qeClip, clip: clip });
+	}
+	return qeClips;
+}
+
+function addVideoEffectToQEClip(qeVideoClip, effectName) {
+	var effect = qe.project.getVideoEffectByName(effectName);
+	qeVideoClip.addVideoEffect(effect);
+}
+
+function addAudioEffectToQEClip(qeAudioClip, effectName) {
+	var effect = qe.project.getAudioEffectByName(effectName);
+	qeAudioClip.addAudioEffect(effect);
+}

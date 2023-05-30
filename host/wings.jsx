@@ -1,8 +1,4 @@
-
-
 function addWings() {
-
-
     function applyBlurToFirstClipFirstTrack() {
         var firstClipFirstTrack = app.project.activeSequence.videoTracks[0].clips[0];
         var firstClipFirstTrackDimensions = getClipDimensions(firstClipFirstTrack);
@@ -15,17 +11,10 @@ function addWings() {
         blurEffect.properties[0].setValue(blurStrength)
     }
 
-
-
-
-
-
     var originalSequenceID = app.project.activeSequence.sequenceID;
     var activeSequence = app.project.activeSequence;
     var selection = activeSequence.getSelection();
     var selectedClip = selection[0];
-    // clipFitSequence(selectedClip);
-
     var nestedSequence = nestSelection();
 
     // open nested sequence
@@ -34,14 +23,6 @@ function addWings() {
             app.project.openSequence(app.project.sequences[i].sequenceID)
         }
     }
-
-
-    // // remove audio tracks
-    // lockVideoTracks(true)
-    // var qeSequence = qe.project.getActiveSequence()
-    // qeSequence.removeTracks()
-    // lockVideoTracks(false)
-
 
     var currentTrack = 0;
     var currentClip = app.project.activeSequence.videoTracks[currentTrack].clips[0];
@@ -79,12 +60,5 @@ function addWings() {
     app.project.openSequence(originalSequenceID)
     lockAudioTracks(false)
 
-    // var subSequence = app.project.sequences[app.project.sequences.numSequences - 1];
-    // app.project.openSequence(subSequence.sequenceID);
-    // talert(projectSequences)
-    // talert(projectSequences[projectSequences.numSequences - 1].id)
-    // // app.project.openSequence(app.project.sequences[nestedSequence.id].sequenceID)
-
-    // open sequence
     return
 }
