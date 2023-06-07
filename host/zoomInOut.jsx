@@ -9,39 +9,26 @@ function zoom(type) {
 
 function zoomManual(clip, type) {
     var targetClip = clip;
-    var duration = targetClip.end;
     var fillScale = clipFillSequence(targetClip);
-    var clipComponents = targetClip.components;
-    for (var j = 0; j < clipComponents.length; j++) {
-        if (clipComponents[j].displayName == "Motion") {
-            var componentParams = clipComponents[j].properties;
-            for (var l = 0; l < componentParams.length; l++) {
-                if (componentParams[l].displayName == "Scale") {
-                    var scaleParam = componentParams[l];
+    var motionComponent = getComponentFromClip(clip, "Motion");
+    var scaleProp = getPropertyFromComponent(motionComponent, "Scale");
 
-                    var inPoint = targetClip.inPoint.seconds - crossfadeSeconds;
-                    var outPoint = targetClip.outPoint.seconds + crossfadeSeconds;
+    var inPoint = targetClip.inPoint.seconds - crossfadeSeconds;
+    var outPoint = targetClip.outPoint.seconds + crossfadeSeconds;
 
-                    scaleParam.setTimeVarying(false);
-                    scaleParam.setTimeVarying(true);
-                    scaleParam.addKey(inPoint);
-                    scaleParam.addKey(outPoint);
-                    var zoomValue = fillScale + (zoomPercent * fillScale / 100)
+    scaleProp.setTimeVarying(false);
+    scaleProp.setTimeVarying(true);
+    scaleProp.addKey(inPoint);
+    scaleProp.addKey(outPoint);
+    var zoomValue = fillScale + (zoomPercent * fillScale / 100)
 
-                    if (type == "in") {
-                        scaleParam.setValueAtKey(inPoint, fillScale);
-                        scaleParam.setValueAtKey(outPoint, zoomValue);
-                    } else {
-                        scaleParam.setValueAtKey(inPoint, zoomValue);
-                        scaleParam.setValueAtKey(outPoint, fillScale);
-                    }
-                    break;
-                }
-            }
-            break;
-        }
+    if (type == "in") {
+        scaleProp.setValueAtKey(inPoint, fillScale);
+        scaleProp.setValueAtKey(outPoint, zoomValue);
+    } else {
+        scaleProp.setValueAtKey(inPoint, zoomValue);
+        scaleProp.setValueAtKey(outPoint, fillScale);
     }
-
 }
 
 

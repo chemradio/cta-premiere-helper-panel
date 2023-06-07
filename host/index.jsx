@@ -1,4 +1,3 @@
-app.enableQE();
 if (ExternalObject.AdobeXMPScript == undefined) {
     ExternalObject.AdobeXMPScript = new ExternalObject("lib:AdobeXMPScript");
 }
@@ -14,3 +13,4 @@ var crossfadeSeconds = 0;
 #include "zoomInOut.jsx";
 #include "voiceConceal.jsx";
 #include "brolls.jsx";
+#include "fitFill.jsx";

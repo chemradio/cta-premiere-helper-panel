@@ -1,16 +1,12 @@
 function addWings() {
-    function applyBlurToFirstClipFirstTrack() {
-        var firstClipFirstTrack = app.project.activeSequence.videoTracks[0].clips[0];
-        var firstClipFirstTrackDimensions = getClipDimensions(firstClipFirstTrack);
-        var blurStrength = firstClipFirstTrackDimensions[0] / 1920 * 50;
-
-        var firstClipFirstTrackQE = qe.project.getActiveSequence().getVideoTrackAt(0).getItemAt(0)
-        firstClipFirstTrackQE.addVideoEffect(qe.project.getVideoEffectByName("Fast Blur"));
-
-        var blurEffect = firstClipFirstTrack.components[firstClipFirstTrack.components.numItems - 1];
+    function configureBlur(clip) {
+        var clipDimensions = getClipDimensions(clip);
+        var blurStrength = clipDimensions[0] / app.project.activeSequence.frameSizeHorizontal * 50;
+        var blurEffect = clip.components[clip.components.numItems - 1];
         blurEffect.properties[0].setValue(blurStrength)
     }
 
+    // nest selection
     var originalSequenceID = app.project.activeSequence.sequenceID;
     var activeSequence = app.project.activeSequence;
     var selection = activeSequence.getSelection();
@@ -19,8 +15,9 @@ function addWings() {
 
     // open nested sequence
     for (var i = 0; i < app.project.sequences.numSequences; i++) {
-        if (app.project.sequences[i].name == nestedSequence.name) {
-            app.project.openSequence(app.project.sequences[i].sequenceID)
+        var tempSequence = app.project.sequences[i];
+        if (tempSequence.sequenceID == nestedSequence.sequenceID) {
+            app.project.openSequence(tempSequence.sequenceID);
         }
     }
 
@@ -31,6 +28,9 @@ function addWings() {
     // set clip to fill screen
     clipFillSequence(currentClip);
 
+    var savedInPoint = currentProjectItem.getInPoint();
+    var savedOutPoint = currentProjectItem.getOutPoint();
+
     currentProjectItem.clearInPoint();
     currentProjectItem.clearOutPoint();
     currentProjectItem.setInPoint(currentClip.inPoint.ticks, 1)
@@ -38,11 +38,20 @@ function addWings() {
     currentProjectItem.setInPoint(0, 2)
     currentProjectItem.setOutPoint(0, 2)
 
-
-    // todo lock all audio tracks
     app.project.activeSequence.videoTracks[currentTrack + 1].insertClip(currentProjectItem, currentClip.start);
-    clipFitSequence(app.project.activeSequence.videoTracks[currentTrack + 1].clips[0]);
-    applyBlurToFirstClipFirstTrack()
+
+    currentProjectItem.setInPoint(savedInPoint, 4);
+    currentProjectItem.setOutPoint(savedOutPoint, 4);
+
+    var bottomClip = app.project.activeSequence.videoTracks[currentTrack].clips[0];
+    var topClip = app.project.activeSequence.videoTracks[currentTrack + 1].clips[0];
+
+    clipFitSequence(topClip);
+    var qeClip = getQEItemByClip(bottomClip);
+
+    addVideoEffectToQEClip(qeClip, "Fast Blur");
+    configureBlur(bottomClip);
+
 
     // delete audio in the new sequence
     var auTracks = app.project.activeSequence.audioTracks;
@@ -59,6 +68,6 @@ function addWings() {
 
     app.project.openSequence(originalSequenceID)
     lockAudioTracks(false)
-
     return
 }
+

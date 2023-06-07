@@ -1,38 +1,33 @@
 function voiceConceal() {
-	var qeClips = getQEItemsBySelection();
-	if (!qeClips) {
+	var activeSequence = app.project.activeSequence;
+	var selection = activeSequence.getSelection();
+	if (selection.length < 1) {
 		return;
 	}
 
-	if (qeClips.length < 1) {
-		return;
-	}
-
-	for (var i = 0; i < qeClips.length; i++) {
-		var clip = qeClips[i].clip;
-		if (clip.mediaType == 'Video') {
+	for (var i = 0; i < selection.length; i++) {
+		var targetClip = selection[i];
+		if (targetClip.mediaType == 'Video') {
 			continue;
 		}
 
-		var qeClip = qeClips[i].qeClip;
-		addAudioEffectToQEClip(qeClip, 'Pitch Shifter');
-
-		// configure pitch shifter
-		for (var j = 0; j < clip.components.length; j++) {
-			var component = clip.components[j];
-
-			if (component.displayName == 'Pitch Shifter') {
-				for (var k = 0; k < component.properties.length; k++) {
-					if (component.properties[k].displayName == 'Precision') {
-						component.properties[k].setValue(2);
-					}
-					if (
-						component.properties[k].displayName == 'Transpose Ratio'
-					) {
-						component.properties[k].setValue(0.1380711);
-					}
-				}
-			}
+		var targetQEClip = getQEItemByClip(targetClip);
+		if (!targetQEClip) {
+			continue;
 		}
+
+		addAudioEffectToQEClip(targetQEClip, 'Pitch Shifter');
+
+		var pitchShifterComponents = getSameNameComponentsFromClip(targetClip, "Pitch Shifter");
+		if (pitchShifterComponents.length < 1) {
+			alert("Something went wrong");
+			return;
+		}
+
+		var precisionProp = getPropertyFromComponent(pitchShifterComponents[0], 'Precision');
+		precisionProp.setValue(2);
+
+		var ratioProp = getPropertyFromComponent(pitchShifterComponents[0], 'Transpose Ratio');
+		ratioProp.setValue(0.1380711);
 	}
 }
