@@ -25,7 +25,33 @@ voiceConcealButton.addEventListener('click', () => {
 	csInterface.evalScript('voiceConceal()');
 });
 
+var fitButton = document.getElementById('fit');
+fitButton.addEventListener('click', () => {
+	csInterface.evalScript('fitFillSelection("fit")');
+});
+
+var fillButton = document.getElementById('fill');
+fillButton.addEventListener('click', () => {
+	csInterface.evalScript('fitFillSelection("fill")');
+});
+
+//
 var brollBoxGuestButton = document.getElementById('brollBoxGuest');
 brollBoxGuestButton.addEventListener('click', () => {
-	csInterface.evalScript('brollBoxGuest()');
+	csInterface.evalScript('broll("box", "guest")');
+});
+
+var brollBoxVideoButton = document.getElementById('brollBoxVideo');
+brollBoxVideoButton.addEventListener('click', () => {
+	csInterface.evalScript('broll("box", "video")');
+});
+
+var brollOverlayGuestButton = document.getElementById('brollOverlayGuest');
+brollOverlayGuestButton.addEventListener('click', () => {
+	csInterface.evalScript('broll("overlay", "guest")');
+});
+
+var brollOverlayVideoButton = document.getElementById('brollOverlayVideo');
+brollOverlayVideoButton.addEventListener('click', () => {
+	csInterface.evalScript('broll("overlay", "video")');
 });
